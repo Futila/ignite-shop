@@ -1,8 +1,3 @@
-import { styled } from "../styles";
-
-
-
-
 
 
 export default function Home() {
