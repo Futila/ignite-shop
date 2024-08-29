@@ -1,8 +1,18 @@
+import { styled } from "../styles";
+
+
+
+const Button = styled("button", {
+  backgroundColor:'$rocketseat', 
+  borderRadius: 4,
+  width: 400
+})
+
 
 export default function Home() {
   return (
     <div>
-      <h1>Hello world, Fernando Futila</h1>
+      <Button>Enviar</Button>
     </div>
   );
 }
