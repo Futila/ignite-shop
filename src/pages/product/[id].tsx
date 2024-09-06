@@ -4,6 +4,8 @@ import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/p
 import { GetStaticPaths, GetStaticProps } from "next"
 import Stripe from "stripe"
 import { stripe } from "../../lib/stripe"
+import axios from "axios"
+import { useState } from "react"
 
 
 
@@ -25,17 +27,31 @@ export const getStaticPaths: GetStaticPaths = async() => {
         params: {id: "prod_Ql1QA5dHoGqopq"}
       }
     ], 
-    fallback: true
+    fallback: "blocking"
   }
 }
 
 
 export default function Product({product}: ProductProps) {
-  const {query} = useRouter()
+  const [isCreatingCheckout, setIsCreatingCheckout] = useState(false)
 
 
-  function handleBuyButton() {
-    console.log(product.defaultPriceId);
+ async function handleBuyButton() {
+    try {
+      setIsCreatingCheckout(true)
+      const response = await axios.post("/api/checkout", {
+          priceId: product.defaultPriceId
+      })
+
+      const {checkoutUrl} = response.data
+
+      window.location.href = checkoutUrl
+
+    }catch(error) {
+
+      setIsCreatingCheckout(false)
+      alert("Erro a redirecionar ao!")
+    }
   }
 
   return(
@@ -49,7 +65,7 @@ export default function Product({product}: ProductProps) {
         <span>{product.price}</span>
 
         <p>{product.description}</p>
-      <button onClick={handleBuyButton}>
+      <button disabled={isCreatingCheckout} onClick={handleBuyButton}>
         Comprar agora
       </button>
     </ProductDetails>
