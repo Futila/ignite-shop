@@ -1,4 +1,4 @@
-import { useRouter } from "next/router"
+import Head from "next/head";
 import Image from "next/image"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
 import { GetStaticPaths, GetStaticProps } from "next"
@@ -33,12 +33,12 @@ export const getStaticPaths: GetStaticPaths = async() => {
 
 
 export default function Product({product}: ProductProps) {
-  const [isCreatingCheckout, setIsCreatingCheckout] = useState(false)
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
 
  async function handleBuyButton() {
     try {
-      setIsCreatingCheckout(true)
+      setIsCreatingCheckoutSession(true)
       const response = await axios.post("/api/checkout", {
           priceId: product.defaultPriceId
       })
@@ -49,27 +49,34 @@ export default function Product({product}: ProductProps) {
 
     }catch(error) {
 
-      setIsCreatingCheckout(false)
+      setIsCreatingCheckoutSession(false)
       alert("Erro a redirecionar ao!")
     }
   }
 
   return(
-    <ProductContainer>
-    <ImageContainer>
-      <Image src={product.imageUrl} width={520} height={480} alt="" />
-    </ImageContainer>
+    <>
+    <Head>
+      <title>{product.name} | Ignite Shop</title>
+    </Head>
 
-    <ProductDetails>
-    <h1>{product.name}</h1>
+    <ProductContainer>
+      <ImageContainer>
+        <Image src={product.imageUrl} width={520} height={480} alt="" />
+      </ImageContainer>
+
+      <ProductDetails>
+        <h1>{product.name}</h1>
         <span>{product.price}</span>
 
         <p>{product.description}</p>
-      <button disabled={isCreatingCheckout} onClick={handleBuyButton}>
-        Comprar agora
-      </button>
-    </ProductDetails>
-  </ProductContainer>
+
+        <button disabled={isCreatingCheckoutSession} onClick={handleBuyButton}>
+          Comprar agora
+        </button>
+      </ProductDetails>
+    </ProductContainer>
+  </>
   )
 }
 
