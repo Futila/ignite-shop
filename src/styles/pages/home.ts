@@ -55,6 +55,12 @@ export const Product = styled("div", {
     justifyContent: "space-between",
 
 
+    div: {
+      display: "flex", 
+      flexDirection: "column", 
+      gap: 4,
+    },
+
     strong: {
       fontSize: '$lg',
       color: '$gray100',
