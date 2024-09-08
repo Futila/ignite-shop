@@ -3,10 +3,15 @@ import { CartButton } from "../CartButton";
 import { CartClose, CartContent, CartFinalization, CartProduct, CartProductDetails, CartProductImage, FinalizationDetails } from "./styles";
 import { X } from "phosphor-react";
 import Image from "next/image";
+import { useCart } from "../../hooks/useCart";
 
 
 
 export function Cart () {
+
+  const {cartItems} = useCart()
+
+  console.log(cartItems)
 
   return (
     <Dialog.Root>

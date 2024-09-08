@@ -10,15 +10,13 @@ import Stripe from "stripe";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import { CartButton } from "../components/CartButton";
+import { useCart } from "../hooks/useCart";
+import { IProduct } from "../contexts/CartContext";
+import { MouseEvent } from "react";
 
 
 interface HomeProps {
-  products: {
-    id: string, 
-    name: string, 
-    imageUrl: string,
-    price:number
-  }[]
+  products: IProduct[]
 }
 
 export default function Home({products}: HomeProps) {
@@ -29,6 +27,13 @@ export default function Home({products}: HomeProps) {
    dragFree: true
   })
 
+
+  const {addToCart, checkIfItemAlreadyExists} =  useCart()
+
+  function handleAddToCart(e: MouseEvent<HTMLButtonElement>, product: IProduct ){
+    e.preventDefault();
+    addToCart(product)
+  }
   return (
     <>
     <Head>
@@ -51,7 +56,12 @@ export default function Home({products}: HomeProps) {
                         <span>{product.price}</span>
                       </div>
 
-                      <CartButton color="green" size="large" />
+                      <CartButton 
+                        disabled={checkIfItemAlreadyExists(product.id)} 
+                        onClick={(e) => handleAddToCart(e, product)} 
+                        color="green" 
+                        size="large" 
+                      />
                     </footer>
                   </Product>
                 </Link>
