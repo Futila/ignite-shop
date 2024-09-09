@@ -8,7 +8,7 @@ export interface IProduct {
   imageUrl: string,
   price: string,
   numberPrice: number, 
-  dedscription: string, 
+  description: string, 
   defaultPriceId: string, 
 }
 
@@ -33,7 +33,7 @@ export function CartContextProvider ({children}: CartContextProviderProps) {
 
 
   const cartTotal = cartItems.reduce((total, product) => {
-    return total + product.numberPrice
+    return total + product.numberPrice;
   }, 0)
 
   function addToCart(product: IProduct) {

@@ -9,9 +9,15 @@ import { useCart } from "../../hooks/useCart";
 
 export function Cart () {
 
-  const {cartItems} = useCart()
+  const {cartItems, removeCartItem, cartTotal} = useCart()
+  const cartQuantity = cartItems.length
 
-  console.log(cartItems)
+  console.log("total", cartTotal)
+
+  const formattedCartTotal = new Intl.NumberFormat("pt-BR", {
+    style: "currency", 
+    currency: "BRL"
+  }).format(cartTotal)
 
   return (
     <Dialog.Root>
@@ -28,19 +34,25 @@ export function Cart () {
 
 
         <section>
-          <p>Parece que seu carrinho está vazio 😌</p>
+          {cartItems.length <= 0 && (
+            <p>Parece que seu carrinho está vazio 😌</p>
+          )}
 
-          <CartProduct>
-            <CartProductImage>
-              <Image width={100} height={93} alt=""/>
-            </CartProductImage>
+          {cartItems.map((item) => {
+            return(
+              <CartProduct key={item.id}>
+                <CartProductImage>
+                  <Image width={100} height={93} alt="" src={item.imageUrl}/>
+                </CartProductImage>
 
-            <CartProductDetails>
-              <p>Nome camiseta</p>
-              <strong>R$ 69</strong>
-              <button>Remover</button>
-            </CartProductDetails>
+                <CartProductDetails>
+                  <p>{item.name}</p>
+                  <strong>{item.price}</strong>
+                  <button onClick={() => removeCartItem(item.id)}>Remover</button>
+                </CartProductDetails>
           </CartProduct>
+            )
+          })}
         </section>
 
 
@@ -50,16 +62,14 @@ export function Cart () {
                 <span>Quantidade</span>
                 <p>
 
-                  2 itens
-                  {/* {cartQuantity} {cartQuantity > 1 ? "itens" : "item"} */}
+                 {cartQuantity} {cartQuantity > 1 ? "itens": "item"}
                 </p>
               </div>
               <div>
                 <span>Valor total</span>
                 <p>
-                  679
-                  {/* {formattedCartTotal} */}
-                  </p>
+                  {formattedCartTotal}
+                </p>
               </div>
             </FinalizationDetails>
             <button

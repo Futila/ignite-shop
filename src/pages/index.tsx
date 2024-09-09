@@ -28,6 +28,8 @@ export default function Home({products}: HomeProps) {
   })
 
 
+  console.log(products)
+
   const {addToCart, checkIfItemAlreadyExists} =  useCart()
 
   function handleAddToCart(e: MouseEvent<HTMLButtonElement>, product: IProduct ){
@@ -92,6 +94,8 @@ export const getStaticProps: GetStaticProps = async () => {
         style: "currency", 
         currency: "BRL", 
       }).format(price.unit_amount / 100),
+      numberPrice: price.unit_amount / 100, 
+      defaultPriceId: price.id
     }
   }) 
 
@@ -99,6 +103,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       products
     }, 
-    revalidate: 60 * 60 * 2
+    revalidate: 60 * 60 * 2 //2 hours
   }
 }
