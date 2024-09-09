@@ -10,6 +10,7 @@ type CartButtonProps = ComponentProps<typeof CartButtonContainer> & {
 export function CartButton ({quantity = 0, ...rest}: CartButtonProps) {
   return (
     <CartButtonContainer {...rest}>
+      {quantity > 0 && <span>{quantity}</span>}
       <Handbag weight="bold"/>
     </CartButtonContainer>
   )
